@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:yoni_thesis/models/ItemData.dart';
 import 'package:yoni_thesis/widgets/item_bar.dart';
 
+import '../services/bluetooth.dart';
+
 class ItemList extends StatefulWidget {
   const ItemList({Key? key}) : super(key: key);
 
@@ -10,6 +12,15 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await Bluetooth.connect();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String assetUrl = 'assets/images/';
