@@ -12,18 +12,20 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  late Bluetooth bluetooth;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      await Bluetooth.connect();
+      bluetooth = Bluetooth.connector();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     String assetUrl = 'assets/images/';
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Items'),
@@ -32,44 +34,60 @@ class _ItemListState extends State<ItemList> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 38.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ItemBar(
-                    data:
-                        ItemData('Apple', 'Kg', 22.34, '${assetUrl}apple.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Avocado', 'Kg', 17.34, '${assetUrl}avocado.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Banana', 'Kg', 52.34, '${assetUrl}banana.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Cabbage', 'Kg', 42.34, '${assetUrl}cabbage.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Carrot', 'Kg', 262.34, '${assetUrl}carrot.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'lettuce', 'Kg', 28.34, '${assetUrl}lettuce.jpg')),
-                ItemBar(
-                    data:
-                        ItemData('Mango', 'Kg', 62.34, '${assetUrl}mango.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Onions', 'Kg', 52.34, '${assetUrl}onions.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Orange', 'Kg', 62.34, '${assetUrl}orange.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Papaya', 'Kg', 562.34, '${assetUrl}papaya.jpg')),
-                ItemBar(
-                    data: ItemData(
-                        'Spinach', 'Kg', 62.34, '${assetUrl}spinach.jpg')),
-              ],
+            child: SizedBox(
+              width: size.width,
+              height: size.height * 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  InkWell(
+                    onTap: () => bluetooth.sendValue("1"),
+                    //behavior: HitTestBehavior.translucent,
+                    child: ItemBar(
+                        data: ItemData(
+                            'Apple', 'Kg', 22.34, '${assetUrl}apple.jpg')),
+                  ),
+                  InkWell(
+                      onTap: () => bluetooth.sendValue("2"),
+                      child: ItemBar(
+                          data: ItemData('Avocado', 'Kg', 17.34,
+                              '${assetUrl}avocado.jpg'))),
+                  InkWell(
+                      onTap: () => bluetooth.sendValue("3"),
+                      child: ItemBar(
+                          data: ItemData(
+                              'Banana', 'Kg', 52.34, '${assetUrl}banana.jpg'))),
+                  ElevatedButton(
+                      onPressed: () => bluetooth.close(),
+                      child: const Text("Close connection"))
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'Cabbage', 'Kg', 42.34, '${assetUrl}cabbage.jpg')),
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'Carrot', 'Kg', 262.34, '${assetUrl}carrot.jpg')),
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'lettuce', 'Kg', 28.34, '${assetUrl}lettuce.jpg')),
+                  // ItemBar(
+                  //     data:
+                  //         ItemData('Mango', 'Kg', 62.34, '${assetUrl}mango.jpg')),
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'Onions', 'Kg', 52.34, '${assetUrl}onions.jpg')),
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'Orange', 'Kg', 62.34, '${assetUrl}orange.jpg')),
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'Papaya', 'Kg', 562.34, '${assetUrl}papaya.jpg')),
+                  // ItemBar(
+                  //     data: ItemData(
+                  //         'Spinach', 'Kg', 62.34, '${assetUrl}spinach.jpg')),
+                ],
+              ),
             ),
           ),
         ),

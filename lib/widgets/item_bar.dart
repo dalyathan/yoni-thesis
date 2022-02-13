@@ -8,32 +8,29 @@ class ItemBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () => {},
-      child: Container(
-        width: size.width * 0.4,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(size.width * 0.05),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: size.width * 0.2,
-              height: size.width * 0.2,
-              child: CircleAvatar(
-                child: Image.asset(data.imageUrl),
-              ),
+    return Container(
+      width: size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(size.width * 0.05),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: size.width * 0.2,
+            height: size.width * 0.2,
+            child: CircleAvatar(
+              child: Image.asset(data.imageUrl),
             ),
-            Column(
-              children: [
-                Text(data.name),
-                Text('${data.amount} in stock'),
-                Text('${data.price} ETB')
-              ],
-            )
-          ],
-        ),
+          ),
+          Column(
+            children: [
+              Text(data.name),
+              Text('${data.amount} in stock'),
+              Text('${data.price} ETB')
+            ],
+          )
+        ],
       ),
     );
   }
