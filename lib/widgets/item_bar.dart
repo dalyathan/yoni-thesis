@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yoni_thesis/models/ItemData.dart';
 
@@ -19,9 +20,7 @@ class ItemBar extends StatelessWidget {
           SizedBox(
             width: size.width * 0.2,
             height: size.width * 0.2,
-            child: CircleAvatar(
-              child: Image.asset(data.imageUrl),
-            ),
+            child: CachedNetworkImage(imageUrl: data.imageUrl),
           ),
           Column(
             children: [

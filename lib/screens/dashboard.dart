@@ -28,7 +28,7 @@ class _DashboardState extends State<Dashboard> {
             SizedBox(
               height: size.height * 0.1,
             ),
-            Action('Item List', const ItemList(), size)
+            //Action('Item List', const ItemList(), size)
           ],
         ),
       ),
