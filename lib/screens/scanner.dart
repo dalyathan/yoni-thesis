@@ -36,101 +36,56 @@ class _QRViewExampleState extends State<QRViewExample> {
     if (result != null && qrRecognized == false) {
       List<ItemData>? values = tryParse(result!.code!, context);
       if (values != null) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ItemList(
-                        items: values,
-                      )),
-            ));
+        controller?.pauseCamera(); //.then((value) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          qrRecognized = false;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ItemList(
+                      items: values,
+                    )),
+          ).then((value) {
+            qrRecognized = false;
+            controller?.resumeCamera();
+          });
+        });
+        // });
         qrRecognized = true;
       }
     }
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
+          Expanded(flex: 20, child: _buildQrView(context)),
           Expanded(
             flex: 1,
             child: FittedBox(
               fit: BoxFit.contain,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   if (result == null)
-                    const Text('Scan a code')
+                    const Text(
+                      'Scan a code',
+                      style: TextStyle(fontSize: 10),
+                    )
                   else if (result != null && qrRecognized == false)
-                    const Text('Unknown format')
+                    const Text(
+                      'Unknown format',
+                      style: TextStyle(fontSize: 10),
+                    )
                   else if (result != null && qrRecognized == true)
-                    const Text('Loading..')
+                    const Text(
+                      'Loading..',
+                      style: TextStyle(fontSize: 10),
+                    )
                   else
-                    const Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.flipCamera();
-                            setState(() {});
-                          },
-                          child: FutureBuilder(
-                            future: controller?.getCameraInfo(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data != null) {
-                                return Text(
-                                    'Camera facing ${describeEnum(snapshot.data!)}');
-                              } else {
-                                return const Text('loading');
-                              }
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: const Text('pause',
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: const Text('resume',
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      )
-                    ],
-                  ),
+                    const Text(
+                      'Scan a code',
+                      style: TextStyle(fontSize: 10),
+                    ),
                 ],
               ),
             ),
@@ -149,17 +104,18 @@ class _QRViewExampleState extends State<QRViewExample> {
       return null;
     }
     for (var possibleItem in value) {
-      if (possibleItem.length != 5 ||
+      if (possibleItem.length != 6 ||
           double.tryParse(possibleItem[3]) == null ||
           Uri.tryParse(possibleItem[1]) == null ||
-          int.tryParse(possibleItem[4]) == null) {
+          int.tryParse(possibleItem[4]) == null ||
+          int.tryParse(possibleItem[5]) == null) {
         print("error at " + possibleItem.toString());
         return null;
       }
     }
     return value
         .map((item) => ItemData(item[0], item[1], item[2],
-            double.parse(item[3]), int.parse(item[4])))
+            double.parse(item[3]), int.parse(item[4]), int.parse(item[5])))
         .toList();
   }
 

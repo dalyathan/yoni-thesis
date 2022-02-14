@@ -19,7 +19,7 @@ class _ItemListState extends State<ItemList> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      bluetooth = Bluetooth.connector(context);
+      //bluetooth = Bluetooth.connector(context);
     });
   }
 
@@ -30,6 +30,8 @@ class _ItemListState extends State<ItemList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Items'),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromRGBO(54, 80, 111, 1),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -37,22 +39,20 @@ class _ItemListState extends State<ItemList> {
             padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 38.0),
             child: SizedBox(
               width: size.width,
-              height: size.height * 0.5,
+              //height: size.height * 0.5,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ...widget.items.map((item) => InkWell(
-                        onTap: () =>
-                            bluetooth.sendValue(item.bluetoothValue.toString()),
-                        child: ItemBar(
-                            data: ItemData(item.name, item.imageUrl,
-                                item.metric, item.price, item.bluetoothValue)),
+                        onTap: () => {},
+                        // bluetooth.sendValue(item.bluetoothValue.toString()),
+                        child: ItemBar(data: item),
                       )),
-                  ElevatedButton(
-                      onPressed: () => bluetooth.close(),
-                      child: const Text("Close connection"))
+                  //  ElevatedButton(
+                  //    onPressed: () => bluetooth.close(),
+                  //  child: const Text("Close connection"))
                 ],
               ),
             ),

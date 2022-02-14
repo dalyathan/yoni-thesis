@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yoni_thesis/screens/dashboard.dart';
+
+import '../widgets/form.dart';
+import '../widgets/header.dart';
+import '../widgets/no_account.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -7,96 +10,41 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double titleheightRatio = 0.075;
+    double largeSpacerRatio = 0.125;
+    double formHeightRatio = 0.375;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
       body: SafeArea(
+          child: SingleChildScrollView(
         child: Column(
           children: [
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 28.0),
-                child: Text(
-                  'Amede Birr',
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
+            SizedBox(
+              height: size.height * largeSpacerRatio * 1.25,
             ),
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 28.0),
-                child: Text(
-                  'Make your life simple',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 28.0),
-                child: Text(
-                  'Login',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
-                children: [
-                  const Text("Username"),
-                  SizedBox(width: size.width * 0.5, child: const TextField())
-                ],
+            Center(
+              child: LoginFormHead(
+                height: size.height * titleheightRatio,
               ),
             ),
             SizedBox(
-              height: size.height * 0.025,
+              height: size.height * largeSpacerRatio * 0.5,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
-                children: [
-                  const Text("Password"),
-                  SizedBox(width: size.width * 0.5, child: const TextField())
-                ],
+            Center(
+              child: LoginFormContainer(
+                height: size.height * formHeightRatio,
               ),
             ),
             SizedBox(
-              height: size.height * 0.025,
+              height: size.height * largeSpacerRatio * 0.25,
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: SizedBox(
-                  width: size.width * 0.25,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0))),
-                      ),
-                      onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Dashboard()),
-                          ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Icon(
-                            Icons.login,
-                            color: Colors.white,
-                          ),
-                          Text('Login')
-                        ],
-                      )),
-                ),
+            Center(
+              child: NoAccountContainer(
+                height: size.height * 0.2,
               ),
-            )
+            ),
           ],
         ),
-      ),
+      )),
     );
   }
 }

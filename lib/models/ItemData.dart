@@ -5,8 +5,8 @@ class ItemData {
   final String metric;
   final double price;
   final int bluetoothValue;
-  int amount = 0;
+  final int inStock;
 
-  ItemData(
-      this.name, this.imageUrl, this.metric, this.price, this.bluetoothValue);
+  ItemData(this.name, this.imageUrl, this.metric, this.price,
+      this.bluetoothValue, this.inStock);
 }
