@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:yoni_thesis/models/ItemData.dart';
 import 'package:yoni_thesis/widgets/item_bar.dart';
 
-import '../services/bluetooth.dart';
+import 'scanner.dart';
 
 class ItemList extends StatefulWidget {
   final List<ItemData> items;
@@ -13,19 +16,27 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
-  late Bluetooth bluetooth;
+  BluetoothConnection? connection;
+  String message = "Connecting..";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      //bluetooth = Bluetooth.connector(context);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      BluetoothConnection.toAddress('00:21:13:01:05:E7')
+          .then<void>((value) => setState(() {
+                connection = value;
+              }))
+          .catchError((onError) {
+        setState(() {
+          message = "Unable to Connect. Is Bluetooth On?";
+        });
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    String assetUrl = 'assets/images/';
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -46,13 +57,50 @@ class _ItemListState extends State<ItemList> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ...widget.items.map((item) => InkWell(
-                        onTap: () => {},
-                        // bluetooth.sendValue(item.bluetoothValue.toString()),
+                        onTap: connection != null
+                            ? () => connection!.output.add(
+                                ascii.encode(item.bluetoothValue.toString()))
+                            : null,
                         child: ItemBar(data: item),
                       )),
-                  //  ElevatedButton(
-                  //    onPressed: () => bluetooth.close(),
-                  //  child: const Text("Close connection"))
+                  connection == null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              message,
+                              style: const TextStyle(
+                                  fontSize: 10, color: Colors.grey),
+                            ),
+                            ElevatedButton(
+                                onPressed: message == "Connecting.."
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          message = "Connecting..";
+                                        });
+                                        BluetoothConnection.toAddress(
+                                                '00:21:13:01:05:E7')
+                                            .then<void>((value) => setState(() {
+                                                  connection = value;
+                                                }))
+                                            .catchError((onError) {
+                                          setState(() {
+                                            message =
+                                                "Unable to Connect. Is Bluetooth On?";
+                                          });
+                                        });
+                                      },
+                                child: const Text("Reconnect"))
+                          ],
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            connection!.close(); //.then((value) =>
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Scan Again"))
                 ],
               ),
             ),

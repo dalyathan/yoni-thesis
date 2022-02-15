@@ -19,41 +19,20 @@ class LoginFormHead extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(
-                  flex: 6,
-                ),
                 SizedBox(
                   height: height * 0.5,
                   child: FittedBox(
                     fit: BoxFit.fitHeight,
                     child: Text(
-                      "Your",
-                      style: GoogleFonts.sora(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-                SizedBox(
-                  height: height * 0.5,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Text(
-                      "Kiosk",
+                      "Vending Machine",
                       style: GoogleFonts.sora(
                           color: MyTheme.lightBlue,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-                const Spacer(
-                  flex: 6,
                 ),
               ],
             ),
