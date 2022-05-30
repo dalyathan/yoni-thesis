@@ -3,10 +3,17 @@ import 'package:yoni_thesis/screens/dashboard.dart';
 import '../theme.dart';
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final double width;
   final double height;
-  const LoginButton({Key? key, required this.width, required this.height})
+  final String description;
+  final VoidCallback onPressed;
+  const CustomButton(
+      {Key? key,
+      required this.width,
+      required this.height,
+      required this.description,
+      required this.onPressed})
       : super(key: key);
 
   @override
@@ -40,11 +47,8 @@ class LoginButton extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Dashboard()),
-        ),
-        child: const Text('Login'),
+        onPressed: onPressed,
+        child: Text(description),
       ),
     );
   }

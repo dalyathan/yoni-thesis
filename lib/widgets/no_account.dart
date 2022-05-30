@@ -1,3 +1,5 @@
+import 'package:yoni_thesis/screens/signup.dart';
+
 import '../theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,9 +18,19 @@ class NoAccountContainer extends StatelessWidget {
             "You don't have an account yet?",
             style: GoogleFonts.sora(fontSize: 15),
           ),
-          Text(
-            "create account",
-            style: GoogleFonts.sora(color: MyTheme.darkBlue, fontSize: 20),
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SignupRoute()),
+            ),
+            child: Text(
+              "create account",
+              style: GoogleFonts.sora(
+                color: MyTheme.darkBlue,
+                fontSize: 20,
+                decoration: TextDecoration.underline,
+              ),
+            ),
           )
         ],
       ),
