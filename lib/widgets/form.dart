@@ -158,13 +158,13 @@ class _LoginFormContainerState extends State<LoginFormContainer> {
           var decoded = jsonDecode(accountData['message']);
           print(decoded['first_name']);
           profile.setAccount(Account.fromJson(decoded));
-          setState(() {
-            isLoading = false;
-          });
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const Dashboard()),
           );
+          // setState(() {
+          //   isLoading = false;
+          // });
         } else {
           setState(() {
             isLoading = false;
